@@ -5,7 +5,7 @@ import path from 'path'
 const eventsPath = path.join(__dirname, '../../events')
 const eventFiles = fs.readdirSync(eventsPath).filter(file => file.endsWith(".ts"))
 
-export function EventHandler(client) {
+export function EventHandler(client: Client) {
     for (const file of eventFiles) {
         const filePath = path.join(eventsPath, file)
         const event = require(filePath)

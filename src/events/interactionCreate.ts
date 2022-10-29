@@ -1,9 +1,4 @@
-import {
-  Events,
-  Client,
-  InteractionReplyOptions,
-  InteractionType,
-} from "discord.js";
+import { Events } from "discord.js";
 
 module.exports = {
   name: Events.InteractionCreate,

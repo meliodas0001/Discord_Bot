@@ -10,6 +10,10 @@ declare global {
       TOKEN: string;
       clientId: string;
       guildId: string;
+      TwitchID: string;
+      TwitchSecret: string;
+      BearerToken: string;
+      DATABASE_URL: string;
     }
   }
 }

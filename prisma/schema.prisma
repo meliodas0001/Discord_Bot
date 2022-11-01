@@ -11,7 +11,7 @@ datasource db {
 }
 
 model Game {
-  username String
+  name String @unique
   id String @id
   adGames AdGames[]
 }
@@ -22,8 +22,8 @@ model AdGames {
   name String
   discordName String
   discordId String
-  haveMic Boolean
-  timePlaying Int
+  haveMic Boolean @default(false)
+  timePlaying String
   createdAt DateTime @default(now())
 
   game Game @relation(fields: [gameId], references: [id])

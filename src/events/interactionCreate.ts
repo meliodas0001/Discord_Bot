@@ -1,4 +1,5 @@
 import { Events } from "discord.js";
+// import { searchGame } from "../interactions/searchGame";
 
 module.exports = {
   name: Events.InteractionCreate,

@@ -1,0 +1,7 @@
+{
+  "GamePublish": {
+    "titleGame": "What game do you want to search for players?",
+    "titleTimePlaying": "How time you're playing?",
+    "successMessage": "If there is any player available to play, a message will be sent to your private"
+  }
+}

@@ -1,6 +1,6 @@
 -- CreateTable
 CREATE TABLE `Game` (
-    `username` VARCHAR(191) NOT NULL,
+    `name` VARCHAR(191) NOT NULL,
     `id` VARCHAR(191) NOT NULL,
 
     PRIMARY KEY (`id`)
@@ -13,8 +13,8 @@ CREATE TABLE `AdGames` (
     `name` VARCHAR(191) NOT NULL,
     `discordName` VARCHAR(191) NOT NULL,
     `discordId` VARCHAR(191) NOT NULL,
-    `haveMic` BOOLEAN NOT NULL,
-    `timePlaying` INTEGER NOT NULL,
+    `haveMic` BOOLEAN NOT NULL DEFAULT false,
+    `timePlaying` VARCHAR(191) NOT NULL,
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
 
     PRIMARY KEY (`id`)

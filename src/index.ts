@@ -12,4 +12,12 @@ EventHandler(client);
 CommandHandler(client);
 import "./utils/SlashBuilder";
 
+import { GameRepository } from "./modules/Games/repositories/GameRepository/GameRepository";
+
+async function teste() {
+  console.log(await new GameRepository().getGame("1234"));
+}
+
+teste();
+
 client.login(process.env.TOKEN);

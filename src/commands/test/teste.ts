@@ -7,6 +7,8 @@ import {
   ActionRowBuilder,
 } from "discord.js";
 
+import { GameRepository } from "../../modules/Games/repositories/GameRepository/GameRepository";
+import { TwitchRepository } from "../../modules/Games/repositories/TwitchRepository/TwitchRepository";
 import { GamePublish } from "../../config/modal.json";
 
 module.exports = {
@@ -42,8 +44,45 @@ module.exports = {
     await interaction.showModal(modal);
 
     const modalSubmitInteraction = await interaction.awaitModalSubmit({
-      filter: (i) => {
-        console.log(i.fields.fields);
+      filter: async (i) => {
+        const getGameName = i.fields.fields.get("getGame_name")?.value;
+        const getTimePlaying = i.fields.fields.get("getTImePlaying")?.value;
+
+        if (getGameName && getTimePlaying) {
+          try {
+            const checkGame = await (
+              await new TwitchRepository().GetGame(getGameName)
+            ).data[0];
+            const validate = await new GameRepository().getGame(checkGame.id);
+
+            // Passa pelo banco de dados e verifica se o jogo existe, caso não exista cria um novo jogo no banco de dados
+            if (!validate) {
+              await new GameRepository().createGame(
+                checkGame.name,
+                checkGame.id
+              );
+            }
+
+            // Se existir o jogo, é adicionado o jogo na lista de jogos da database
+            await new GameRepository().createGameAnnounce(
+              checkGame.name,
+              checkGame.id,
+              i.user.username,
+              i.user.id,
+              getTimePlaying
+            );
+          } catch (error) {
+            // Se cair no erro é porque nenhum jogo foi encontrado na api da twitch
+            await i.reply({
+              content: `Game: ${getGameName} not founded`,
+              ephemeral: true,
+            });
+            return false;
+          }
+        } else {
+          throw new Error("gameName is undefined");
+        }
+
         return true;
       },
       time: 99999,

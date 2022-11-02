@@ -1,11 +1,16 @@
 import { IGameRepository } from "./IGameRepository";
-import { PrismaClient } from "@prisma/client";
+import { AdGames, PrismaClient } from "@prisma/client";
 import { IGame } from "./IGameRepository";
 
 const prisma = new PrismaClient();
 
 class GameRepository implements IGameRepository {
   constructor() {}
+
+  getAnnounce(id: string): Promise<AdGames | null> {
+    throw new Error("Method not implemented.");
+  }
+
   async createGameAnnounce(
     gameName: string,
     gameId: string,
@@ -23,7 +28,8 @@ class GameRepository implements IGameRepository {
       },
     });
   }
-  async getGame(id: string): Promise<IGame> {
+
+  async getGame(id: string): Promise<IGame | null> {
     const games = await prisma.game.findUnique({
       select: {
         id: true,
@@ -36,7 +42,7 @@ class GameRepository implements IGameRepository {
     });
 
     if (!games) {
-      throw new Error("No game as found");
+      return null;
     }
 
     return games;

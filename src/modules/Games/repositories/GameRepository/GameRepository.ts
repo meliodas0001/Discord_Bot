@@ -6,22 +6,52 @@ const prisma = new PrismaClient();
 
 class GameRepository implements IGameRepository {
   constructor() {}
+  async deleteAnnounce(id: string): Promise<void> {
+    await prisma.adGames.delete({
+      where: {
+        id,
+      },
+    });
+  }
 
-  async getAnnounce(id: string): Promise<AdGames[] | null> {
+  async getAnnounce(name: string): Promise<AdGames[] | null> {
+    const Announce = await prisma.adGames.findMany({
+      select: {
+        id: true,
+        gameId: true,
+        name: true,
+        discordName: true,
+        discordId: true,
+        haveMic: true,
+        timePlaying: true,
+        createdAt: true,
+      },
+      where: {
+        name,
+      },
+    });
+
+    if (!Announce) {
+      return null;
+    }
+
+    return Announce;
+  }
+
+  async getAnnounceOfPlayer(discordId: string): Promise<AdGames[] | null> {
     const Announces = await prisma.adGames.findMany({
       select: {
         id: true,
-        discordId: true,
-        discordName: true,
-        createdAt: true,
-        game: true,
         gameId: true,
-        haveMic: true,
         name: true,
+        discordName: true,
+        discordId: true,
+        haveMic: true,
         timePlaying: true,
+        createdAt: true,
       },
       where: {
-        discordId: id,
+        discordId,
       },
     });
 

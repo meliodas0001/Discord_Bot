@@ -26,7 +26,9 @@ interface IGameRepository {
 
   getGame(id: string): Promise<IGame | null>;
   createGame(name: string, id: string): Promise<void>;
-  getAnnounce(id: string): Promise<AdGames[] | null>;
+  getAnnounceOfPlayer(discordId: string): Promise<AdGames[] | null>;
+  getAnnounce(name: string): Promise<AdGames[] | null>;
+  deleteAnnounce(id: string): Promise<void>;
 }
 
 export { IGameRepository, IGame };

@@ -11,7 +11,7 @@ datasource db {
 }
 
 model Game {
-  name String @unique
+  name String
   id String @id
   adGames AdGames[]
 }

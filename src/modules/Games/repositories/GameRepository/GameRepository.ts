@@ -7,8 +7,29 @@ const prisma = new PrismaClient();
 class GameRepository implements IGameRepository {
   constructor() {}
 
-  getAnnounce(id: string): Promise<AdGames | null> {
-    throw new Error("Method not implemented.");
+  async getAnnounce(id: string): Promise<AdGames[] | null> {
+    const Announces = await prisma.adGames.findMany({
+      select: {
+        id: true,
+        discordId: true,
+        discordName: true,
+        createdAt: true,
+        game: true,
+        gameId: true,
+        haveMic: true,
+        name: true,
+        timePlaying: true,
+      },
+      where: {
+        discordId: id,
+      },
+    });
+
+    if (!Announces) {
+      return null;
+    }
+
+    return Announces;
   }
 
   async createGameAnnounce(

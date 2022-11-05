@@ -1,11 +1,17 @@
 import { Events } from "discord.js";
-// import { searchGame } from "../interactions/searchGame";
+import { ModalSearch_Players } from "../interactions/InteractionModal/Search_Players";
 
 module.exports = {
   name: Events.InteractionCreate,
   on: true,
   async execute(interaction) {
     const command = interaction.client.commands.get(interaction.commandName);
+
+    // Interaction Commands Response Section
+
+    ModalSearch_Players(interaction);
+
+    //
 
     if (!command) {
       console.error(

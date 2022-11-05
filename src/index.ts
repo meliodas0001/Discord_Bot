@@ -15,7 +15,7 @@ import "./utils/SlashBuilder";
 import { GameRepository } from "./modules/Games/repositories/GameRepository/GameRepository";
 
 async function teste() {
-  console.log(await new GameRepository().getGame("1234"));
+  console.log(await new GameRepository().getAnnounce("290853252646305792"));
 }
 
 teste();

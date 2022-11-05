@@ -2,12 +2,14 @@ import { IGameRepository } from "./IGameRepository";
 import { AdGames, PrismaClient } from "@prisma/client";
 import { IGame } from "./IGameRepository";
 
-const prisma = new PrismaClient();
-
 class GameRepository implements IGameRepository {
-  constructor() {}
+  private readonly prisma: PrismaClient;
+
+  constructor() {
+    this.prisma = new PrismaClient();
+  }
   async deleteAnnounce(id: string): Promise<void> {
-    await prisma.adGames.delete({
+    await this.prisma.adGames.delete({
       where: {
         id,
       },
@@ -15,7 +17,7 @@ class GameRepository implements IGameRepository {
   }
 
   async getAnnounce(name: string): Promise<AdGames[] | null> {
-    const Announce = await prisma.adGames.findMany({
+    const Announce = await this.prisma.adGames.findMany({
       select: {
         id: true,
         gameId: true,
@@ -39,7 +41,7 @@ class GameRepository implements IGameRepository {
   }
 
   async getAnnounceOfPlayer(discordId: string): Promise<AdGames[] | null> {
-    const Announces = await prisma.adGames.findMany({
+    const Announces = await this.prisma.adGames.findMany({
       select: {
         id: true,
         gameId: true,
@@ -69,7 +71,7 @@ class GameRepository implements IGameRepository {
     discordId: string,
     timePlaying: string
   ) {
-    await prisma.adGames.create({
+    await this.prisma.adGames.create({
       data: {
         gameId,
         name: gameName,
@@ -81,7 +83,7 @@ class GameRepository implements IGameRepository {
   }
 
   async getGame(id: string): Promise<IGame | null> {
-    const games = await prisma.game.findUnique({
+    const games = await this.prisma.game.findUnique({
       select: {
         id: true,
         name: true,
@@ -99,7 +101,7 @@ class GameRepository implements IGameRepository {
     return games;
   }
   async createGame(name: string, id: string): Promise<void> {
-    await prisma.game.create({
+    await this.prisma.game.create({
       data: {
         name,
         id,

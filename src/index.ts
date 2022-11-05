@@ -11,15 +11,13 @@ client.commands = new Collection();
 EventHandler(client);
 CommandHandler(client);
 import "./utils/SlashBuilder";
-
+import "./api/server";
 import { GameRepository } from "./modules/Games/repositories/GameRepository/GameRepository";
-import { PartyAnnounce } from "./utils/PartyAnnounce";
 
-async function teste() {
-  // // await PartyAnnounce("God of War", "290853252646305792");
-  // console.log(await client.users.fetch("972606024190144532"));
+async function Teste() {
+  console.log(await new GameRepository().getAnnounce("roblox"));
 }
 
-teste();
+Teste();
 
 client.login(process.env.TOKEN);

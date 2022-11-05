@@ -1,20 +1,3 @@
-interface AdGames {
-  id: string;
-  gameId: string;
-  name: string;
-  discordName: string;
-  discordId: string;
-  haveMic: boolean;
-  timePlaying: string;
-  createdAt: Date;
-}
-
-interface IGameR {
-  name: string;
-  id: string;
-  adGames: AdGames[];
-}
-
 interface IGameRepository {
   createGameAnnounce(
     gameName: string,

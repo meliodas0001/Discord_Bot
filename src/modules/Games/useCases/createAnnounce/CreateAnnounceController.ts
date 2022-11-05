@@ -17,6 +17,6 @@ export class CreateAnnounceController {
       useMicrophone,
     });
 
-    return response.send("foi");
+    return response.status(200).send();
   }
 }

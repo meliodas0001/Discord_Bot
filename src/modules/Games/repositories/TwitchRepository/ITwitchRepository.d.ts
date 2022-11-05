@@ -9,7 +9,5 @@ interface IGame {
 }
 
 interface ITwitchRepository {
-  GetGame(name: string): Promise<IGame>;
+  GetGame(name: string): Promise<IGame | null>;
 }
-
-export { IGame, ITwitchRepository };

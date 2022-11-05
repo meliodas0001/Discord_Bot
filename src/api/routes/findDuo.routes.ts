@@ -2,6 +2,8 @@ import { Router } from "express";
 
 export const findDuoRoute = Router();
 
-findDuoRoute.get("/", (req, res) => {
-  res.send(200);
-});
+import { CreateAnnounceController } from "../../modules/Games/useCases/createAnnounce/CreateAnnounceController";
+
+const createAnnounceController = new CreateAnnounceController();
+
+findDuoRoute.post("/create", createAnnounceController.handle);

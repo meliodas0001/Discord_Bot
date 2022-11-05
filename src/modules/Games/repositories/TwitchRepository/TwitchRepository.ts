@@ -1,9 +1,8 @@
-import { IGame, ITwitchRepository } from "./ITwitchRepository";
 import axios from "axios";
 
 class TwitchRepository implements ITwitchRepository {
   constructor() {}
-  async GetGame(name: string): Promise<IGame> {
+  async GetGame(name: string): Promise<IGame | null> {
     const game = await axios.get(
       `https://api.twitch.tv/helix/games/?name=${name}`,
       {
@@ -15,7 +14,7 @@ class TwitchRepository implements ITwitchRepository {
     );
 
     if (game.data.data.length === 0) {
-      throw new Error("Game does not exist!");
+      return null;
     }
 
     return game.data;

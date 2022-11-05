@@ -9,9 +9,9 @@ interface AdGames {
   createdAt: Date;
 }
 
-interface IGame {
-  name: String;
-  id: String;
+interface IGameR {
+  name: string;
+  id: string;
   adGames: AdGames[];
 }
 
@@ -21,14 +21,13 @@ interface IGameRepository {
     gameId: string,
     discordName: string,
     discordId: string,
-    timePlaying: string
+    timePlaying: string,
+    haveMicrophone?: boolean
   );
 
-  getGame(id: string): Promise<IGame | null>;
+  getGame(id: string): Promise<IGameR | null>;
   createGame(name: string, id: string): Promise<void>;
   getAnnounceOfPlayer(discordId: string): Promise<AdGames[] | null>;
   getAnnounce(name: string): Promise<AdGames[] | null>;
   deleteAnnounce(id: string): Promise<void>;
 }
-
-export { IGameRepository, IGame };

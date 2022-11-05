@@ -1,6 +1,4 @@
-import { IGameRepository } from "./IGameRepository";
 import { AdGames, PrismaClient } from "@prisma/client";
-import { IGame } from "./IGameRepository";
 
 class GameRepository implements IGameRepository {
   private readonly prisma: PrismaClient;
@@ -69,7 +67,8 @@ class GameRepository implements IGameRepository {
     gameId: string,
     discordName: string,
     discordId: string,
-    timePlaying: string
+    timePlaying: string,
+    haveMicrophone?: boolean
   ) {
     await this.prisma.adGames.create({
       data: {
@@ -78,11 +77,12 @@ class GameRepository implements IGameRepository {
         discordName,
         discordId,
         timePlaying,
+        haveMic: haveMicrophone ? haveMicrophone : false,
       },
     });
   }
 
-  async getGame(id: string): Promise<IGame | null> {
+  async getGame(id: string): Promise<IGameR | null> {
     const games = await this.prisma.game.findUnique({
       select: {
         id: true,
@@ -97,7 +97,6 @@ class GameRepository implements IGameRepository {
     if (!games) {
       return null;
     }
-
     return games;
   }
   async createGame(name: string, id: string): Promise<void> {

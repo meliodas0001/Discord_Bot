@@ -1,3 +1,4 @@
+import "reflect-metadata";
 import "dotenv/config";
 import { Client, Collection } from "discord.js";
 
@@ -13,11 +14,6 @@ CommandHandler(client);
 import "./utils/SlashBuilder";
 import "./api/server";
 import { GameRepository } from "./modules/Games/repositories/GameRepository/GameRepository";
-
-async function Teste() {
-  console.log(await new GameRepository().getAnnounce("roblox"));
-}
-
-Teste();
+import { container } from "tsyringe";
 
 client.login(process.env.TOKEN);

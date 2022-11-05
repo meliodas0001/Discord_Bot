@@ -6,6 +6,7 @@ import "express-async-errors";
 import { AppError } from "./errors/AppError";
 
 import { router } from "./routes";
+import "./shared/container";
 
 const app = express();
 

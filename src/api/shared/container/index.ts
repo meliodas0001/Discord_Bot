@@ -1,8 +1,5 @@
 import { container } from "tsyringe";
 
-import { IGameRepository } from "../../../modules/Games/repositories/GameRepository/IGameRepository";
-import { ITwitchRepository } from "../../../modules/Games/repositories/TwitchRepository/ITwitchRepository";
-
 import { GameRepository } from "../../../modules/Games/repositories/GameRepository/GameRepository";
 import { TwitchRepository } from "../../../modules/Games/repositories/TwitchRepository/TwitchRepository";
 

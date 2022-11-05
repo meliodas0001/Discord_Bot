@@ -1,10 +1,16 @@
 import { EmbedBuilder } from "@discordjs/builders";
 import { Colors } from "discord.js";
+import { container } from "tsyringe";
 import { GameRepository } from "../../../modules/Games/repositories/GameRepository/GameRepository";
 import { TwitchRepository } from "../../../modules/Games/repositories/TwitchRepository/TwitchRepository";
 import { PartyAnnounce } from "../../../utils/PartyAnnounce";
 
 export async function ModalSearch_Players(interaction) {
+  const twitchRepository = container.resolve(TwitchRepository);
+  const gameRepository = container.resolve(GameRepository);
+
+  let verifyExist: boolean = false;
+
   if (
     interaction.isModalSubmit() &&
     interaction.customId === "SearchPlayerModal"
@@ -15,54 +21,48 @@ export async function ModalSearch_Players(interaction) {
 
     if (getGameName && getTimePlaying) {
       try {
-        let checkGame = (await new TwitchRepository().GetGame(getGameName))
-          .data[0];
+        let check = await twitchRepository.GetGame(getGameName);
+
+        if (check == null) {
+          return;
+        }
+
+        let checkGame = check.data[0];
 
         const imgReplaceOptions = checkGame.box_art_url.replace(
           "{width}x{height}",
           "500x600"
         );
 
-        const validate = await new GameRepository().getGame(checkGame.id);
+        const validate = await gameRepository.getGame(checkGame.id);
 
-        const checkIfAnnounceExit = await new GameRepository().getAnnounce(
+        const checkAnnounceExits = await gameRepository.getAnnounceOfPlayer(
           interaction.user.id
         );
 
-        const test = checkIfAnnounceExit?.forEach(async (x) => {
+        checkAnnounceExits?.forEach((x) => {
           if (x.gameId === checkGame.id) {
-            return true;
+            verifyExist = true;
           }
         });
 
         // Passa pelo banco de dados e verifica se o jogo existe, caso não exista cria um novo jogo no banco de dados
         if (!validate) {
-          await new GameRepository().createGame(checkGame.name, checkGame.id);
+          await gameRepository.createGame(checkGame.name, checkGame.id);
         }
 
         // Se existir o jogo, é adicionado o jogo na lista de jogos da database
-        if (test != undefined) {
+        if (verifyExist != false) {
           throw new Error("Your announce already Exists");
         }
 
-        await new GameRepository().createGameAnnounce(
+        await gameRepository.createGameAnnounce(
           checkGame.name,
           checkGame.id,
           interaction.user.tag,
           interaction.user.id,
           getTimePlaying
         );
-
-        // const embed = {
-        //   color: Colors.Green,
-        //   title: `Your Game has been Announced`,
-        //   author: interaction.user.username,
-        //   description:
-        //     "When i Found a new party i will call in this chat\n see you tomorrow! :)",
-        //   image: {
-        //     url: imgReplaceOptions,
-        //   },
-        // };
 
         const privateMessageEmbed = new EmbedBuilder()
           .setColor(Colors.Green)
@@ -71,7 +71,6 @@ export async function ModalSearch_Players(interaction) {
             iconURL: `https://cdn.discordapp.com/avatars/${interaction.user.id}/${interaction.user.avatar}.png`,
           })
           .setTitle("Game Announced!")
-
           .setDescription(
             `Your game **${checkGame.name}** has been announced, when i found a new party i will call in this chat\n**See you tomorrow! :)**`
           )
